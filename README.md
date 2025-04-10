@@ -8,3 +8,7 @@
    ```bash
    cd linux-node-42
    ```
+2. Run
+   ```bash
+   ./install.sh
+   ```
