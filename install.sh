@@ -28,9 +28,25 @@ export PATH="/home/tel-mouh/goinfre/.nvm/versions/node/$NODE_VERSION/bin:$PATH"
 CURRENT_SHELL=$(basename "$SHELL")
 CURRENT_SHELLRC="$HOME/.$CURRENT_SHELL""rc"
 
+# Create the .npm directory if it doesn't exist
+mkdir -p "$HOME/goinfre/.npm"
+
+# Export NPM_CONFIG_CACHE and add it to the shell rc file
+export NPM_CONFIG_CACHE="$HOME/goinfre/.npm"
+echo "export NPM_CONFIG_CACHE=\"$HOME/goinfre/.npm\"" >> $CURRENT_SHELLRC
 
 # Add the PATH modification to ~/.zshrc and ~/.bashrc
 echo "export PATH=\"$HOME/goinfre/.nvm/versions/node/\$(nvm current)/bin:\$PATH\"" >> $CURRENT_SHELLRC
+
+
+EXPECTED_CACHE_PATH="$HOME/goinfre/.npm"
+ACTUAL_CACHE_PATH=$(npm config get cache)
+
+if [ "$ACTUAL_CACHE_PATH" = "$EXPECTED_CACHE_PATH" ]; then
+  echo -e "\033[0;32mNPM cache is correctly set to $ACTUAL_CACHE_PATH\033[0m"
+else
+  echo -e "\033[0;31mNPM cache is not correctly set. Current value: $ACTUAL_CACHE_PATH\033[0m"
+fi
 
 
 npm -g install npm@latest
